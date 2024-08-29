@@ -1,0 +1,10 @@
+query Find_Active_Milestone($projectPath: ID!, $date: Time) {
+  group(fullPath: $projectPath) {
+    milestones(containingDate: $date) {
+      nodes {
+        title
+        dueDate
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "name": "@gquittet/baltig-label-deployer",
+  "version": "0.1.0",
+  "description": "Add correct label for deployed issues to board automatically",
+  "type": "module",
+  "license": "MIT",
+  "author": "Guillaume Quittet <guillaume.quittet@gmail.com> (https://github.com/gquittet)",
+  "homepage": "https://github.com/gquittet/baltig-label-deployer",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gquittet/baltig-label-deployer.git"
+  },
+  "bugs": {
+    "email": "guillaume.quittet@gmail.com",
+    "url": "https://github.com/gquittet/baltig-label-deployer/issues"
+  },
+  "exports": "./index.js",
+  "bin": "index.js",
+  "scripts": {
+    "prebuild": "tsc --build --clean",
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint .",
+    "test": "pnpm run lint",
+    "preversion": "pnpm run test && pnpm run build",
+    "prepublish": "pnpm run test && pnpm run build"
+  },
+  "files": [
+    "**/*.js"
+  ],
+  "keywords": [],
+  "packageManager": "pnpm@9.9.0",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@vinejs/vine": "^2.1.0",
+    "axios": "^1.7.5"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.1",
+    "@types/node": "^22.5.1",
+    "eslint": "^9.9.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-unused-imports": "^4.1.3",
+    "globals": "^15.9.0",
+    "prettier": "^3.3.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.3.0"
+  },
+  "imports": {
+    "#config/*": "./config/*.js",
+    "#services/*": "./services/*.js",
+    "#utils/*": "./utils/*.js"
+  }
+}

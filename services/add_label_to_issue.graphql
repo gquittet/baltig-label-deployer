@@ -1,0 +1,15 @@
+mutation Add_Label_To_Issue($id: String!, $labelId: ID!, $projectPath: ID!) {
+  updateIssue(
+    input: { iid: $id, addLabelIds: [$labelId], projectPath: $projectPath }
+  ) {
+    issue {
+      title
+      labels {
+        nodes {
+          title
+        }
+      }
+    }
+    errors
+  }
+}
