@@ -1,6 +1,6 @@
 import type fetchActiveMilestone from "#services/fetch_active_milestone";
 import vine from "@vinejs/vine";
-import env from "#config/config";
+import { env } from "#config/config";
 import executeQuery from "#utils/execute_query";
 import loadQuery from "#utils/load_query";
 
@@ -16,7 +16,7 @@ const schema = vine.object({
               iid: vine.string().regex(/^\d+$/),
               webPath: vine
                 .string()
-                .startsWith(`/${env.PROJECT_PATH}/`)
+                .startsWith(`/${env.project}/`)
                 .regex(/\/-\/merge_requests\/\d+/)
                 .transform(value => value.slice(1)),
             }),
@@ -34,7 +34,7 @@ export default async function fetchMrOfMilestone(args: {
     operationName: "Fetch_MR_Of_Milestone",
     query,
     variables: {
-      projectPath: env.PROJECT_PATH,
+      projectPath: env.project,
       milestone: args.milestone.title,
     },
   });
@@ -42,6 +42,6 @@ export default async function fetchMrOfMilestone(args: {
   const body = await vine.validate({ schema, data });
   return body.data.data.group.mergeRequests.nodes.map(mr => ({
     ...mr,
-    url: `${env.GITLAB_ENDPOINT}/${mr.webPath}`,
+    url: `${env.host}/${mr.webPath}`,
   }));
 }

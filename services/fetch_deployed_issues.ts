@@ -1,7 +1,7 @@
 import type fetchActiveMilestone from "#services/fetch_active_milestone";
 import type fetchLabels from "#services/fetch_labels";
 import vine from "@vinejs/vine";
-import env from "#config/config";
+import { env } from "#config/config";
 import executeQuery from "#utils/execute_query";
 import loadQuery from "#utils/load_query";
 
@@ -17,7 +17,7 @@ const schema = vine.object({
               iid: vine.string().regex(/^\d+$/),
               webPath: vine
                 .string()
-                .startsWith(`/${env.PROJECT_PATH}/`)
+                .startsWith(`/${env.project}/`)
                 .regex(/\/-\/issues\/\d+/)
                 .transform(value => value.split("/-/")[0].slice(1)),
             }),
@@ -36,7 +36,7 @@ export default async function fetchDeployedIssues(args: {
     operationName: "Find_All_Issues_To_Add_Deployed",
     query,
     variables: {
-      projectPath: env.PROJECT_PATH,
+      projectPath: env.project,
       milestone: args.milestone.title,
       labels: args.labels.map(label => label.title),
     },

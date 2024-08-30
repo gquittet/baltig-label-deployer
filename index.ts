@@ -1,4 +1,4 @@
-import env from "#config/config";
+import { env } from "#config/config";
 import addLabelToIssues from "#services/add_label_to_issues";
 import fetchActiveMilestone from "#services/fetch_active_milestone";
 import fetchAllOpenedIssuesOfMilestone from "#services/fetch_all_opened_issues_of_milestone";
@@ -21,7 +21,7 @@ async function newMilestone() {
   log("Fetched active milestone successfully ✔");
   if (newMilestone.id === activeMilestone.id) {
     log(
-      `You have to create a new milestone first: ${env.GITLAB_ENDPOINT}/groups/${env.PROJECT_PATH}/-/milestones/new`,
+      `You have to create a new milestone first: ${env.host}/groups/${env.project}/-/milestones/new`,
     );
     return;
   }

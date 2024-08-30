@@ -1,5 +1,5 @@
 import vine from "@vinejs/vine";
-import env from "#config/config";
+import { env } from "#config/config";
 import executeQuery from "#utils/execute_query";
 import loadQuery from "#utils/load_query";
 
@@ -52,7 +52,7 @@ export default async function fetchLastMilestone() {
     operationName: "Fetch_Last_Milestone",
     query,
     variables: {
-      projectPath: env.PROJECT_PATH,
+      projectPath: env.project,
     },
   });
   const body = await vine.validate({ schema, data });

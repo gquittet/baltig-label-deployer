@@ -1,16 +1,17 @@
-import process from "node:process";
+import type { Infer } from "@vinejs/vine/types";
 import vine from "@vinejs/vine";
 
 const schema = vine.object({
-  GITLAB_ENDPOINT: vine
+  host: vine
     .string()
     .url({ protocols: ["https"] })
     .transform(url => url.replace(/\/$/, "")),
-  GITLAB_TOKEN: vine.string(),
-  PROJECT_PATH: vine.string(),
-  TZ: vine.string().parse(value => (!value ? "TZ" : value)),
+  token: vine.string(),
+  project: vine.string(),
 });
 
-const env = await vine.validate({ schema, data: process.env });
+export let env!: Infer<typeof schema>;
 
-export default env;
+export const load = async (flags: Record<string, unknown>) => {
+  env = await vine.validate({ schema, data: flags });
+};

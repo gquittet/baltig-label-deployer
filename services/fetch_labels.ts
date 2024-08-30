@@ -1,5 +1,5 @@
 import vine from "@vinejs/vine";
-import env from "#config/config";
+import { env } from "#config/config";
 import executeQuery from "#utils/execute_query";
 import loadQuery from "#utils/load_query";
 
@@ -26,7 +26,7 @@ export default async function fetchLabels() {
   const data = await executeQuery({
     operationName: "Find_All_BlueHorn_Labels",
     query,
-    variables: { prefix: "0 - ", projectPath: env.PROJECT_PATH },
+    variables: { prefix: "0 - ", projectPath: env.project },
   });
   const body = await vine.validate({ schema, data });
   return body.data.data.group.labels.nodes;
