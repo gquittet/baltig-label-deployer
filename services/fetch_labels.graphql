@@ -1,4 +1,4 @@
-query Find_All_BlueHorn_Labels($projectPath: ID!, $prefix: String) {
+query Find_All_Labels($projectPath: ID!, $prefix: String) {
   group(fullPath: $projectPath) {
     labels(searchTerm: $prefix) {
       nodes {

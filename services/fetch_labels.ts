@@ -24,7 +24,7 @@ const schema = vine.object({
 
 export default async function fetchLabels() {
   const data = await executeQuery({
-    operationName: "Find_All_BlueHorn_Labels",
+    operationName: "Find_All_Labels",
     query,
     variables: { prefix: "0 - ", projectPath: env.project },
   });
