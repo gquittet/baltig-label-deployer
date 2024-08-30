@@ -1,15 +1,6 @@
-query Find_All_Issues_To_Add_Deployed(
-  $projectPath: ID!
-  $milestone: String
-  $date: Time
-  $labels: [String!]
-) {
+query Find_All_Issues_To_Add_Deployed($projectPath: ID!, $milestone: String, $labels: [String!]) {
   group(fullPath: $projectPath) {
-    issues(
-      milestoneTitle: [$milestone]
-      closedBefore: $date
-      not: { labelName: $labels }
-    ) {
+    issues(milestoneTitle: [$milestone], state: closed, not: { labelName: $labels }) {
       nodes {
         iid
         webPath

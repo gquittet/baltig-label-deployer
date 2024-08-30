@@ -1,0 +1,10 @@
+query Fetch_MR_Of_Milestone($projectPath: ID!, $milestone: String!) {
+  group(fullPath: $projectPath) {
+    mergeRequests(milestoneTitle: $milestone, state: opened) {
+      nodes {
+        iid
+        webPath
+      }
+    }
+  }
+}

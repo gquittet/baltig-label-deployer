@@ -5,10 +5,7 @@ const schema = vine.object({
   GITLAB_ENDPOINT: vine
     .string()
     .url({ protocols: ["https"] })
-    .transform(url => {
-      const baseUrl = url.replace(/\/$/, "");
-      return `${baseUrl}/api/graphql`;
-    }),
+    .transform(url => url.replace(/\/$/, "")),
   GITLAB_TOKEN: vine.string(),
   PROJECT_PATH: vine.string(),
   TZ: vine.string().parse(value => (!value ? "TZ" : value)),

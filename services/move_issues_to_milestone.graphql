@@ -1,0 +1,13 @@
+mutation Move_Issue_To_Milestone($id: String!, $newMilestone: ID!, $projectPath: ID!) {
+  updateIssue(input: { iid: $id, projectPath: $projectPath, milestoneId: $newMilestone }) {
+    issue {
+      title
+      labels {
+        nodes {
+          title
+        }
+      }
+    }
+    errors
+  }
+}

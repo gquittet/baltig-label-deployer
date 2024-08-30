@@ -14,12 +14,12 @@
     "email": "guillaume.quittet@gmail.com",
     "url": "https://github.com/gquittet/baltig-label-deployer/issues"
   },
-  "exports": "./index.js",
-  "bin": "index.js",
+  "exports": "./cli.js",
+  "bin": "cli.js",
   "scripts": {
+    "start": "node --env-file=.env --import=./ts-node.esm.js --watch cli.ts",
     "prebuild": "tsc --build --clean",
     "build": "tsc",
-    "dev": "tsc --watch",
     "lint": "eslint .",
     "test": "pnpm run lint",
     "preversion": "pnpm run test && pnpm run build",
@@ -35,7 +35,8 @@
   },
   "dependencies": {
     "@vinejs/vine": "^2.1.0",
-    "axios": "^1.7.5"
+    "axios": "^1.7.5",
+    "meow": "^13.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",

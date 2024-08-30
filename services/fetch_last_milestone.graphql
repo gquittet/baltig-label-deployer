@@ -1,0 +1,11 @@
+query Fetch_Last_Milestone($projectPath: ID!) {
+  group(fullPath: $projectPath) {
+    milestones(sort: EXPIRED_LAST_DUE_DATE_DESC, first: 1) {
+      nodes {
+        id
+        title
+        dueDate
+      }
+    }
+  }
+}

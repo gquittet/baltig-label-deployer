@@ -1,7 +1,8 @@
 query Find_Active_Milestone($projectPath: ID!, $date: Time) {
   group(fullPath: $projectPath) {
-    milestones(containingDate: $date) {
+    milestones(sort: EXPIRED_LAST_DUE_DATE_DESC, containingDate: $date, first: 1) {
       nodes {
+        id
         title
         dueDate
       }

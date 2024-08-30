@@ -1,0 +1,10 @@
+query Fetch_All_Opened_Issues_Of_Milestone($projectPath: ID!, $milestone: String) {
+  group(fullPath: $projectPath) {
+    issues(milestoneTitle: [$milestone], state: opened) {
+      nodes {
+        iid
+        webPath
+      }
+    }
+  }
+}

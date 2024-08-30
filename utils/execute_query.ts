@@ -11,4 +11,4 @@ const client = axios.create({
   },
 });
 
-export default (body: object) => client.post(env.GITLAB_ENDPOINT, body);
+export default (body: object) => client.post(`${env.GITLAB_ENDPOINT}/api/graphql`, body);

@@ -3,7 +3,7 @@ import env from "#config/config";
 import executeQuery from "#utils/execute_query";
 import loadQuery from "#utils/load_query";
 
-const query = loadQuery("./services/fetch_active_milestone.graphql");
+const query = loadQuery("./services/fetch_last_milestone.graphql");
 
 const roundDay = (date: Date) => {
   let result = date;
@@ -47,12 +47,11 @@ const schema = vine.object({
   }),
 });
 
-export default async function fetchActiveMilestone() {
+export default async function fetchLastMilestone() {
   const data = await executeQuery({
-    operationName: "Find_Active_Milestone",
+    operationName: "Fetch_Last_Milestone",
     query,
     variables: {
-      date: new Date().toISOString(),
       projectPath: env.PROJECT_PATH,
     },
   });

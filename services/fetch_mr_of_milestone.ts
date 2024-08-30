@@ -1,25 +1,24 @@
 import type fetchActiveMilestone from "#services/fetch_active_milestone";
-import type fetchLabels from "#services/fetch_labels";
 import vine from "@vinejs/vine";
 import env from "#config/config";
 import executeQuery from "#utils/execute_query";
 import loadQuery from "#utils/load_query";
 
-const query = loadQuery("./services/fetch_deployed_issues.graphql");
+const query = loadQuery("./services/fetch_mr_of_milestone.graphql");
 
 const schema = vine.object({
   data: vine.object({
     data: vine.object({
       group: vine.object({
-        issues: vine.object({
+        mergeRequests: vine.object({
           nodes: vine.array(
             vine.object({
               iid: vine.string().regex(/^\d+$/),
               webPath: vine
                 .string()
                 .startsWith(`/${env.PROJECT_PATH}/`)
-                .regex(/\/-\/issues\/\d+/)
-                .transform(value => value.split("/-/")[0].slice(1)),
+                .regex(/\/-\/merge_requests\/\d+/)
+                .transform(value => value.slice(1)),
             }),
           ),
         }),
@@ -28,20 +27,21 @@ const schema = vine.object({
   }),
 });
 
-export default async function fetchDeployedIssues(args: {
-  labels: Awaited<ReturnType<typeof fetchLabels>>;
+export default async function fetchMrOfMilestone(args: {
   milestone: Awaited<ReturnType<typeof fetchActiveMilestone>>;
 }) {
   const data = await executeQuery({
-    operationName: "Find_All_Issues_To_Add_Deployed",
+    operationName: "Fetch_MR_Of_Milestone",
     query,
     variables: {
       projectPath: env.PROJECT_PATH,
       milestone: args.milestone.title,
-      labels: args.labels.map(label => label.title),
     },
   });
 
   const body = await vine.validate({ schema, data });
-  return body.data.data.group.issues.nodes;
+  return body.data.data.group.mergeRequests.nodes.map(mr => ({
+    ...mr,
+    url: `${env.GITLAB_ENDPOINT}/${mr.webPath}`,
+  }));
 }
