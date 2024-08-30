@@ -4,6 +4,13 @@ import { load } from "#config/config";
 
 process.env.TZ = "UTC";
 
+const isFlagRequired = (flags: Record<string, unknown>) => {
+  if (Object.keys(flags).length === 3) {
+    return false;
+  }
+  return !flags.env;
+};
+
 const cli = meow(
   `
     Usage
@@ -42,15 +49,15 @@ const cli = meow(
       },
       host: {
         type: "string",
-        isRequired: flags => !flags.env,
+        isRequired: isFlagRequired,
       },
       token: {
         type: "string",
-        isRequired: flags => !flags.env,
+        isRequired: isFlagRequired,
       },
       project: {
         type: "string",
-        isRequired: flags => !flags.env,
+        isRequired: isFlagRequired,
       },
       env: {
         type: "boolean",
