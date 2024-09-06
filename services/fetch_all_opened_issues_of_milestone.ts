@@ -1,10 +1,12 @@
 import type fetchActiveMilestone from "#services/fetch_active_milestone";
+import url from "node:url";
 import vine from "@vinejs/vine";
 import { env } from "#config/config";
 import executeQuery from "#utils/execute_query";
 import loadQuery from "#utils/load_query";
 
-const query = loadQuery("./services/fetch_all_opened_issues_of_milestone.graphql");
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
+const query = loadQuery(__dirname + "fetch_all_opened_issues_of_milestone.graphql");
 
 const schema = vine.object({
   data: vine.object({

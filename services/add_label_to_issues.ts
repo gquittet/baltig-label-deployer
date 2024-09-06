@@ -1,9 +1,11 @@
 import type fetchDeployedIssues from "#services/fetch_deployed_issues";
 import type fetchLabels from "#services/fetch_labels";
+import url from "node:url";
 import executeQuery from "#utils/execute_query";
 import loadQuery from "#utils/load_query";
 
-const query = loadQuery("./services/add_label_to_issue.graphql");
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
+const query = loadQuery(__dirname + "add_label_to_issue.graphql");
 
 export default async function addLabelToIssues(args: {
   issues: Awaited<ReturnType<typeof fetchDeployedIssues>>;

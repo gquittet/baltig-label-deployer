@@ -1,9 +1,11 @@
 import type fetchDeployedIssues from "#services/fetch_deployed_issues";
 import type fetchLastMilestone from "#services/fetch_last_milestone";
+import url from "node:url";
 import executeQuery from "#utils/execute_query";
 import loadQuery from "#utils/load_query";
 
-const query = loadQuery("./services/move_issues_to_milestone.graphql");
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
+const query = loadQuery(__dirname + "move_issues_to_milestone.graphql");
 
 export default async function moveIssuesToMilestone(args: {
   issues: Awaited<ReturnType<typeof fetchDeployedIssues>>;
