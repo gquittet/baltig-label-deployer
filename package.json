@@ -26,7 +26,8 @@
     "prepublish": "pnpm run test && pnpm run build"
   },
   "files": [
-    "**/*.js"
+    "**/*.js",
+    "**/*.graphql"
   ],
   "keywords": [],
   "packageManager": "pnpm@9.9.0",
