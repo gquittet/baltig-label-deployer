@@ -1,6 +1,6 @@
 {
   "name": "@gquittet/baltig-label-deployer",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Add correct label for deployed issues to board automatically",
   "type": "module",
   "license": "MIT",
