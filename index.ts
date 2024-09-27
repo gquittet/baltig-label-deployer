@@ -35,8 +35,8 @@ async function newMilestone() {
   log("Done! 📦");
   if (mergeRequests.length) {
     log(
-      "You have to manually update these merge requests:\n",
-      "- " + mergeRequests.map(mr => mr.url).join("\n- "),
+      "You have to manually update these merge requests:\n-",
+      mergeRequests.map(mr => mr.url).join("\n- "),
     );
   }
 }
