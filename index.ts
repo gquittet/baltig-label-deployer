@@ -8,6 +8,8 @@ import fetchLastMilestone from "#services/fetch_last_milestone";
 import fetchMrOfMilestone from "#services/fetch_mr_of_milestone";
 import moveIssuesToMilestone from "#services/move_issues_to_milestone";
 
+const PAGINATION_SIZE = 100;
+
 function log(...args: unknown[]) {
   console.log(`[${new Date().toISOString()}]`, ...args);
 }
@@ -61,11 +63,22 @@ async function addDeployLabels() {
   log("Fetching active milestone 🚚");
   const milestone = await fetchActiveMilestone();
   log("Fetched active milestone successfully ✔");
-  log("Fetching issues 🚚");
-  const issues = await fetchDeployedIssues({ labels, milestone });
-  log("Fetched issues successfully ✔");
-  log(`Updating ${issues.length} issues 🏗️`);
-  await addLabelToIssues({ issues, labels });
+
+  let shouldFetchIssues = true;
+  let totalIssuesUpdated = 0;
+  while (shouldFetchIssues) {
+    log("Fetching issues 🚚");
+    const issues = await fetchDeployedIssues({ labels, milestone });
+    log("Fetched issues successfully ✔");
+    if (issues.length === 0) {
+      break;
+    }
+    log(`Updating ${issues.length} issues 🏗️`);
+    await addLabelToIssues({ issues, labels });
+    totalIssuesUpdated += issues.length;
+    shouldFetchIssues = issues.length === PAGINATION_SIZE;
+  }
+  log(`Successfully added deploy label on ${totalIssuesUpdated} ✔`);
   log("Done! 📦");
 }
 

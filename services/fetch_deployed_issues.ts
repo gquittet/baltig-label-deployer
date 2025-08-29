@@ -20,7 +20,7 @@ const schema = vine.object({
               webPath: vine
                 .string()
                 .startsWith(`/${env.project}/`)
-                .regex(/\/-\/issues\/\d+/)
+                .regex(/\/-\/issues|work_items\/\d+/)
                 .transform(value => value.split("/-/")[0].slice(1)),
             }),
           ),
