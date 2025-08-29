@@ -26,11 +26,24 @@ async function newMilestone() {
     return;
   }
 
-  log("Fetching issues 🚚");
-  const issues = await fetchAllOpenedIssuesOfMilestone({ milestone: activeMilestone });
-  log("Fetched issues successfully ✔");
-  log(`Updating ${issues.length} issues 🏗️`);
-  await moveIssuesToMilestone({ issues, milestone: newMilestone });
+  // Fetch the issues 1 time and handle pagination
+  const PAGINATION_SIZE = 100;
+  let shouldFetchIssues = true;
+  let totalIssuesMoved = 0;
+  while (shouldFetchIssues) {
+    log("Fetching issues 🚚");
+    const issues = await fetchAllOpenedIssuesOfMilestone({ milestone: activeMilestone });
+    if (issues.length === 0) {
+      break;
+    }
+    log("Fetched issues successfully ✔");
+    log(`Updating ${issues.length} issues 🏗️`);
+    await moveIssuesToMilestone({ issues, milestone: newMilestone });
+    totalIssuesMoved += issues.length;
+    shouldFetchIssues = issues.length === PAGINATION_SIZE;
+  }
+  log(`Moved ${totalIssuesMoved} issues ✔`);
+
   const mergeRequests = await fetchMrOfMilestone({ milestone: activeMilestone });
   log("Done! 📦");
   if (mergeRequests.length) {
