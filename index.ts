@@ -29,16 +29,15 @@ async function newMilestone() {
   }
 
   // Fetch the issues 1 time and handle pagination
-  const PAGINATION_SIZE = 100;
   let shouldFetchIssues = true;
   let totalIssuesMoved = 0;
   while (shouldFetchIssues) {
     log("Fetching issues 🚚");
     const issues = await fetchAllOpenedIssuesOfMilestone({ milestone: activeMilestone });
+    log("Fetched issues successfully ✔");
     if (issues.length === 0) {
       break;
     }
-    log("Fetched issues successfully ✔");
     log(`Updating ${issues.length} issues 🏗️`);
     await moveIssuesToMilestone({ issues, milestone: newMilestone });
     totalIssuesMoved += issues.length;
@@ -46,6 +45,7 @@ async function newMilestone() {
   }
   log(`Moved ${totalIssuesMoved} issues ✔`);
 
+  log("Fetching merge requests 🚚");
   const mergeRequests = await fetchMrOfMilestone({ milestone: activeMilestone });
   log("Done! 📦");
   if (mergeRequests.length) {
