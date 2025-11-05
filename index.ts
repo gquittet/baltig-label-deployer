@@ -14,6 +14,12 @@ function log(...args: unknown[]) {
   console.log(`[${new Date().toISOString()}]`, ...args);
 }
 
+const plural = (n: number, text: string): string => {
+  if (text === "this") return n > 1 ? "these" : "this";
+  if (n <= 1 || text.endsWith("s")) return `${n} ${text}`;
+  return `${n} ${text}s`;
+};
+
 async function newMilestone() {
   log(`Fetching last milestone 🚧`);
   const newMilestone = await fetchLastMilestone();
@@ -38,19 +44,23 @@ async function newMilestone() {
     if (issues.length === 0) {
       break;
     }
-    log(`Updating ${issues.length} issues 🏗️`);
+    log(`Moving ${plural(issues.length, "issue")} to the new milestone 🏗️`);
     await moveIssuesToMilestone({ issues, milestone: newMilestone });
     totalIssuesMoved += issues.length;
     shouldFetchIssues = issues.length === PAGINATION_SIZE;
   }
-  log(`Moved ${totalIssuesMoved} issues ✔`);
+  if (totalIssuesMoved === 0) {
+    log("No issue was moved ✔")
+  } else {
+    log(`Moved ${plural(totalIssuesMoved, "issue")} ✔`);
+  }
 
   log("Fetching merge requests 🚚");
   const mergeRequests = await fetchMrOfMilestone({ milestone: activeMilestone });
   log("Done! 📦");
   if (mergeRequests.length) {
     log(
-      "You have to manually update these merge requests:\n-",
+      `You have to manually update ${plural(mergeRequests.length, "this")} ${plural(mergeRequests.length, "merge request")}:\n-`,
       mergeRequests.map(mr => mr.url).join("\n- "),
     );
   }
@@ -73,12 +83,16 @@ async function addDeployLabels() {
     if (issues.length === 0) {
       break;
     }
-    log(`Updating ${issues.length} issues 🏗️`);
+    log(`Updating ${plural(issues.length, "issue")} 🏗️`);
     await addLabelToIssues({ issues, labels });
     totalIssuesUpdated += issues.length;
     shouldFetchIssues = issues.length === PAGINATION_SIZE;
   }
-  log(`Successfully added deploy label on ${totalIssuesUpdated} ✔`);
+  if (totalIssuesUpdated === 0) {
+    log(`No issue was updated ✔`);
+  } else {
+    log(`Successfully added deploy label on ${plural(totalIssuesUpdated, "issue")} ✔`);
+  }
   log("Done! 📦");
 }
 
