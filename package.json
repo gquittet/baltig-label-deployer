@@ -30,7 +30,6 @@
     "**/*.graphql"
   ],
   "keywords": [],
-  "packageManager": "pnpm@10.20.0",
   "engines": {
     "node": ">=20"
   },
